@@ -1,10 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 import 'package:keto_app/Services/auth.dart';
 import 'package:keto_app/screens/admin_screen.dart';
 import 'package:keto_app/screens/home_page.dart';
 import 'package:keto_app/screens/plan1_breakfast.dart';
 import 'package:keto_app/screens/rider_screen.dart';
+import 'package:keto_app/screens/sendMsg.dart';
 import 'package:keto_app/screens/signup_page2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -240,7 +242,7 @@ void checkRole() async{
                   duration: const Duration(seconds: 3),
                   ),
                  
-                );
+                );  
                 
                        } );
                     }
@@ -249,7 +251,7 @@ void checkRole() async{
                     {
                       dynamic result= await _auth.signIn(emailField.text, passwordField.text).then((User? user) => 
                  Navigator.push(context,MaterialPageRoute(
-                  builder: (context) =>RiderScreen())),
+                  builder: (context) =>SendSMS())),
                  ).onError((error, stackTrace) {
                  print("Error ${error.toString()}");
                  ScaffoldMessenger.of(context).showSnackBar(

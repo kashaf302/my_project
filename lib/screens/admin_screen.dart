@@ -237,7 +237,7 @@ await FirebaseFirestore.instance.collection("User Token").doc(FirebaseAuth.insta
               label: const Text('Logout'),
               onPressed: () async {
                 
-                    final action=await AlertDialogs.yesCancelDialog(context, 'Logout', 'Are you sure you want to logout?');
+                    await AlertDialogs.yesCancelDialog(context, 'Logout', 'Are you sure you want to logout?');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepOrangeAccent,
@@ -246,9 +246,9 @@ await FirebaseFirestore.instance.collection("User Token").doc(FirebaseAuth.insta
           ],
         ),
       ),
-      body: Center(
+        body: Center(
         child: Form(
-  key: _formKey,
+       key: _formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,   
           children: [
@@ -323,7 +323,6 @@ await FirebaseFirestore.instance.collection("User Token").doc(FirebaseAuth.insta
                  
                    //var doc;
                   String token=snap['token'];
-                // String token=doc.data()['token'];
                   print(token);
                   sendPushMessage(token, user_title, user_body);
               //  }

@@ -379,7 +379,7 @@ final List<Plans> diet_data=List.generate(plan_title.length, (index) => Plans(ti
   
     }
       ),
-      
+    
       ),
       
     );

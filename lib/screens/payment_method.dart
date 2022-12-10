@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:keto_app/Services/auth.dart';
 import 'package:keto_app/Services/db.dart';
+import 'package:keto_app/screens/cmp_weight.dart';
 import 'package:keto_app/screens/notifications.dart';
 import 'package:keto_app/screens/plans_data.dart';
 import 'package:keto_app/screens/login_page2.dart';
@@ -30,7 +31,7 @@ final _formKey = GlobalKey<FormState>();
 
   
 
-  final AuthService _auth = AuthService(FirebaseAuth.instance);
+  //final AuthService _auth = AuthService(FirebaseAuth.instance);
 
   createAlertDialog(BuildContext context){
   return showDialog(context: context, builder: (context)
@@ -98,7 +99,6 @@ final _formKey = GlobalKey<FormState>();
                               hintText: 'number',
                               fillColor: Colors.white,
                               filled: true,
-                              //prefixIcon: Icon(Icons.numbers),
                               hintStyle: TextStyle(
                                 color: Colors.grey,
                               ),
@@ -129,12 +129,10 @@ final _formKey = GlobalKey<FormState>();
                                 return "Mobile number must start with 0, +92 or 92";
                               }
                             
-                             
                               return null;
                             },
                         ),
                         const SizedBox(height: 20),
-                        
                         
                       ],
                     ), 
@@ -144,8 +142,8 @@ final _formKey = GlobalKey<FormState>();
               ),
             ),
             const SizedBox(height: 20),
-//show data
-Column(
+               //show data
+           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
              children: [
@@ -173,7 +171,6 @@ Column(
              ],
           ),
           SizedBox(height: 20),
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: MaterialButton(
@@ -214,6 +211,33 @@ Column(
                   ),
                 ),
               ),
+            ),
+            SizedBox(height : 30),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: MaterialButton(
+                minWidth: double.infinity,
+                height: 50,
+                onPressed: () {
+                   Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => WeightCompare()));
+                },
+                color: Colors.deepOrangeAccent,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                child: const Text(
+                  "Compare Weight",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                    color: Colors.black,
+                  ),
+                ),
+              )
             ),
           ],
         ),

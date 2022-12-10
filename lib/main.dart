@@ -2,6 +2,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:keto_app/screens/splashscreen.dart';
 import 'package:keto_app/screens/welcome_screen.dart';
 
 
@@ -18,7 +19,7 @@ Future main() async {
   FirebaseMessaging.onBackgroundMessage(backgroundhandler);
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: Welcome(),
+    home: SplashScreen(),
   ));
 }
 class HomePage extends StatefulWidget {
