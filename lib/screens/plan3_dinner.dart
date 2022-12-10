@@ -11,9 +11,9 @@ class _Dinner3State extends State<Dinner3> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightGreenAccent,
+      backgroundColor: Colors.grey,
       appBar: AppBar(
-        backgroundColor: Colors.orangeAccent,
+        backgroundColor: Colors.deepOrangeAccent,
         //centerTitle: true,
         elevation: 0,
         leading: IconButton(

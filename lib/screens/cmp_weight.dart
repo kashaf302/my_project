@@ -37,7 +37,7 @@ createAlertDialog2(BuildContext context){
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: Colors.green,
+       backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: Colors.deepOrangeAccent,
         centerTitle: true,

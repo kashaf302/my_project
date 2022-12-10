@@ -45,7 +45,7 @@ final List<Plans> diet_data=List.generate(plan_title.length, (index) => Plans(ti
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: Colors.deepOrangeAccent,
         elevation: 0,

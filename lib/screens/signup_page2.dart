@@ -78,7 +78,7 @@ class _SignUpScreenUserState extends State<SignUpScreenUser> {
                         )
                       ],
                     ),
-                    Row(
+                  /*  Row(
                       children: <Widget>[
                         const SizedBox(width: 2),
                         Radio(
@@ -116,7 +116,7 @@ class _SignUpScreenUserState extends State<SignUpScreenUser> {
                         ),
                         
                       ],
-                    ),
+                    ),*/
                     Form(
                       key: _formKey,
                       child: Column(

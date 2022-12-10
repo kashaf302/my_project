@@ -11,9 +11,9 @@ class _Breakfast2State extends State<Breakfast2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightGreenAccent,
+      backgroundColor: Colors.grey,
       appBar: AppBar(
-        backgroundColor: Colors.orangeAccent,
+        backgroundColor: Colors.deepOrangeAccent,
         //centerTitle: true,
         elevation: 0,
         leading: IconButton(

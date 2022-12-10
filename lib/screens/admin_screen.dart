@@ -214,7 +214,7 @@ await FirebaseFirestore.instance.collection("User Token").doc(FirebaseAuth.insta
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: Colors.deepOrangeAccent,
         elevation: 0,
@@ -233,8 +233,15 @@ await FirebaseFirestore.instance.collection("User Token").doc(FirebaseAuth.insta
             ),
             const SizedBox(width: 40),
              ElevatedButton.icon(
-              icon: const Icon(Icons.person),
-              label: const Text('Logout'),
+              icon: const Icon(Icons.person,
+              color: Colors.black,
+              ),
+              label: const Text('Logout',
+              style: TextStyle(
+                color: Colors.black,
+              ),
+              
+              ),
               onPressed: () async {
                 
                     await AlertDialogs.yesCancelDialog(context, 'Logout', 'Are you sure you want to logout?');
@@ -347,34 +354,7 @@ await FirebaseFirestore.instance.collection("User Token").doc(FirebaseAuth.insta
              ),
             ),
         
-       //  }
-         // },
-      //  color: Colors.deepOrangeAccent,
-       /* child: Text(
-                          "send",
-                          textAlign: TextAlign.center,
-                           style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          color: Colors.black,
-                        ),
-                        ),*/
-         /* child:  Container(
-                        //"send",
-                        margin: const EdgeInsets.all(20),
-                        width: 100,
-                        height: 40,
-                        color: Colors.deepOrangeAccent,*/
-                       /* child: Text(
-                          "send",
-                          textAlign: TextAlign.center,
-                           style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          color: Colors.black,
-                        ),
-                        ),*/
-       // ),
+       
           
           const SizedBox(height: 20),
           MaterialButton(
@@ -401,7 +381,7 @@ await FirebaseFirestore.instance.collection("User Token").doc(FirebaseAuth.insta
             
       ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+     /* bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home
@@ -424,7 +404,7 @@ await FirebaseFirestore.instance.collection("User Token").doc(FirebaseAuth.insta
         ]
         
         
-        ),
+        ),*/
        
         );
      
