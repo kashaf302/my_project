@@ -8,6 +8,8 @@ import 'package:keto_app/screens/cmp_weight.dart';
 import 'package:keto_app/screens/notifications.dart';
 import 'package:keto_app/screens/plans_data.dart';
 import 'package:keto_app/screens/login_page2.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 //import 'package:firebase_auth/firebase_auth.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -20,6 +22,9 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
 final _formKey = GlobalKey<FormState>();
+
+File? ImgXfile;
+final ImagePicker imagePicker=ImagePicker();
 
   DBservice db=DBservice();
 
@@ -42,6 +47,21 @@ final _formKey = GlobalKey<FormState>();
   }
   
   );
+}
+
+//get image from gallery
+pickImagefromGallery() async{
+  ImgXfile=(await imagePicker.pickImage(source: ImageSource.gallery)) as File?;
+  setState(() {
+    ImgXfile;
+  });
+}
+
+pickImagefromCamera() async{
+  ImgXfile=(await imagePicker.pickImage(source: ImageSource.camera)) as File?;
+  setState(() {
+    ImgXfile;
+  });
 }
 
   @override
@@ -75,8 +95,29 @@ final _formKey = GlobalKey<FormState>();
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            const CircleAvatar(
-                radius: 52, backgroundImage: AssetImage('assets/jazcash.jpg')),
+            GestureDetector(
+              onTap: () {
+                pickImagefromGallery();
+                pickImagefromCamera();
+              },
+            child: CircleAvatar(
+                radius: 52, 
+                backgroundColor: Colors.white,
+                backgroundImage: 
+                //AssetImage('assets/jazcash.jpg'),
+                ImgXfile==null ? null : FileImage(
+                 File(ImgXfile!.path)
+                  
+                  ),
+                child: Icon(
+                  Icons.add_a_photo,
+                  color: Colors.grey,
+                  size: 52,
+                  
+                  ),
+
+                ),
+            ),
             const SizedBox(height: 40),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),

@@ -1,11 +1,11 @@
 
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:keto_app/Services/auth.dart';
 import 'package:keto_app/screens/alert_dialog_logout.dart';
-import 'package:keto_app/screens/authenticate/authenticate.dart';
+//import 'package:keto_app/screens/authenticate/authenticate.dart';
 import 'package:keto_app/screens/dietplan1_Menu.dart';
 import 'package:keto_app/screens/dietplan2_Menu.dart';
 import 'package:keto_app/screens/dietplan3_Menu.dart';
@@ -32,6 +32,7 @@ bool selectedList=false;
 final String title = '';
 
   final AuthService _auth = AuthService(FirebaseAuth.instance);
+  CollectionReference homepage_data=FirebaseFirestore.instance.collection("Home Page Data");
   
 static List<String> plan_title=["Diet Plan 1", "Diet Plan 2", "Diet Plan 3", "Diet Plan 4", "Diet Plan 5", "Diet Plan 6", "Diet Plan 7", "Diet Plan 8", "Diet Plan 9", "Diet plan 10"];
 static List<String> plan_desc=["30 days diet plan", "30 days diet plan", "60 days diet plan", "60 days diet plan","45 days diet plan", "45 days diet plan", "60 days diet plan","60 days diet plan","30 days diet plan","45 days diet plan"];
@@ -75,7 +76,6 @@ final List<Plans> diet_data=List.generate(plan_title.length, (index) => Plans(ti
               style: TextStyle(
                 color: Colors.black
               ),
-              
               ),
               onPressed: () async {
                 final action=await AlertDialogs.yesCancelDialog(context, 'Logout', 'Are you sure you want to logout?');
@@ -128,7 +128,7 @@ final List<Plans> diet_data=List.generate(plan_title.length, (index) => Plans(ti
                 color: Colors.blue,
               ),
               recognizer: TapGestureRecognizer()
-                    ..onTap = () {
+                    ..onTap = () async{
                       if(diet_data[index].title=='Diet Plan 1')
                       {
                       Navigator.push(
@@ -199,6 +199,15 @@ final List<Plans> diet_data=List.generate(plan_title.length, (index) => Plans(ti
                           MaterialPageRoute(
                               builder: (context) => const DietMenu2()));
                               }
+                             /* await homepage_data.doc().set(
+                                  {
+                                  //  "Plan Title" : diet_data[index].title,
+                                    "Plan Description" : plan_desc,
+                                    "Plan Price" : plan_price,
+                                    //"Plan Image" : image_url
+                                  }
+                              ).then((value) => print("User Added"))
+                      .catchError((error) => print("Failed to add user: $error"));*/
                     }
                     
               )

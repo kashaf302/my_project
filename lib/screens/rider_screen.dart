@@ -10,6 +10,8 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
+import 'alert_dialog_logout.dart';
+
 class RiderScreen extends StatefulWidget {
   const RiderScreen({Key? key}) : super(key: key);
 
@@ -104,20 +106,39 @@ addPolyLine(List<LatLng> polylineCoordinates) {
      appBar: AppBar(
         backgroundColor: Colors.red,
         elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-          ),
-        ),
-        title: Text('Google Map',
-        style: TextStyle(
-          color: Colors.black,
-          
-        ),
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            
+            const Text(
+              'Rider Screen',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
+              ),
+            ),
+            const SizedBox(width: 40),
+             ElevatedButton.icon(
+              icon: const Icon(Icons.person,
+              color: Colors.black,
+              ),
+              label: const Text('Logout',
+              style: TextStyle(
+                color: Colors.black,
+              ),
+              
+              ),
+              onPressed: () async {
+                
+                    await AlertDialogs.yesCancelDialog(context, 'Logout', 'Are you sure you want to logout?');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+            ),
+          ],
         ),
       ),
       body: Stack(
@@ -178,6 +199,7 @@ addPolyLine(List<LatLng> polylineCoordinates) {
                         String placeid = place.placeId ?? "0";
                         final detail = await plist.getDetailsByPlaceId(placeid);
                         final geometry = detail.result.geometry!;
+                       
                         final lat = geometry.location.lat;
                         final lang = geometry.location.lng;
                         

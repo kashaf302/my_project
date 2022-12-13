@@ -8,10 +8,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:keto_app/screens/plan1_breakfast.dart';
 import 'package:keto_app/screens/plan1_dinner.dart';
-import 'package:keto_app/screens/viewuserpage.dart';
+//import 'package:keto_app/screens/viewuserpage.dart';
 import 'package:keto_app/shared/loading.dart';
-import 'package:provider/provider.dart';
-import 'package:keto_app/models/user.dart' as UserModal;
+//import 'package:provider/provider.dart';
+//import 'package:keto_app/models/user.dart' as UserModal;
 
 //import '../Services/db.dart';
 
@@ -46,7 +46,7 @@ class _SignUpScreenUserState extends State<SignUpScreenUser> {
         ? Loading()
         : Scaffold(
             resizeToAvoidBottomInset: false,
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.deepOrangeAccent,
            
             body: SingleChildScrollView(
               child: Container(
@@ -471,7 +471,7 @@ class _SignUpScreenUserState extends State<SignUpScreenUser> {
                                           const LoginScreenUser()));
                             },
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.green,
+                              primary: Colors.deepOrangeAccent,
                             ),
                             child: const Text(
                               "Login",

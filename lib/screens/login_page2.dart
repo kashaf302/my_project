@@ -1,12 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_sms/flutter_sms.dart';
 import 'package:keto_app/Services/auth.dart';
 import 'package:keto_app/screens/admin_screen.dart';
 import 'package:keto_app/screens/home_page.dart';
 import 'package:keto_app/screens/plan1_breakfast.dart';
 import 'package:keto_app/screens/rider_screen.dart';
-import 'package:keto_app/screens/sendMsg.dart';
 import 'package:keto_app/screens/signup_page2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -84,7 +82,7 @@ void checkRole() async{
   Widget build(BuildContext context) {
     return loading? Loading() : Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.deepOrangeAccent,
      
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal:40),
@@ -251,7 +249,7 @@ void checkRole() async{
                     {
                       dynamic result= await _auth.signIn(emailField.text, passwordField.text).then((User? user) => 
                  Navigator.push(context,MaterialPageRoute(
-                  builder: (context) =>SendSMS())),
+                  builder: (context) =>RiderScreen())),
                  ).onError((error, stackTrace) {
                  print("Error ${error.toString()}");
                  ScaffoldMessenger.of(context).showSnackBar(
@@ -328,7 +326,7 @@ void checkRole() async{
                                     builder: (context) => SignUpScreenUser()));
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.green,
+                            primary: Colors.deepOrangeAccent,
                           ),
                           child: const Text(
                             'Register',

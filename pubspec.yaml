@@ -59,6 +59,7 @@ dependencies:
   geocoding: ^2.0.5
   flutter_polyline_points: ^1.0.0
   flutter_sms: ^2.3.3
+  image_picker: ^0.8.6
 
 dev_dependencies:
   flutter_test:

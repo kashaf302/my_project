@@ -67,7 +67,7 @@ String? mtoken;
 
 
   //payment  method
-Future<void> storePhoneNo(String phone_No) async
+/*Future<void> storePhoneNo(String phone_No) async
 {
 await db.collection("Payment Method").doc().set(
   {
@@ -75,7 +75,7 @@ await db.collection("Payment Method").doc().set(
   }
 ).then((value)=> print("Payment has been submitted successfully"))
 .catchError((error) => print("Failed to submit payment: $error"));
-}
+}*/
 
 
 

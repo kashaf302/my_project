@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:keto_app/screens/home_page.dart';
 
 class Notifications extends StatefulWidget {
@@ -47,30 +48,9 @@ class _NotificationsState extends State<Notifications> {
         
       });
     });
-    getToken();
   }
 
- 
-//get token method
-void getToken()async{
-  await FirebaseMessaging.instance.getToken().then((token)
-     {
-      setState(() {
-         mtoken=token;
-         print("My token is $mtoken");
-      });
-      saveToken(token!);
-     }
-  );
-}
 
-//save token
-void saveToken(String token)async{
-await FirebaseFirestore.instance.collection("User Token").doc(FirebaseAuth.instance.currentUser!.uid).set({
-    "token" : token,
-
-});
-}
 
   Widget build(BuildContext context) {
     return Scaffold(

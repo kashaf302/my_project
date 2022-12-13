@@ -143,7 +143,7 @@ void requestPermission()async{
  }
 }
 //get token method
-/*void getToken()async{
+void getToken()async{
   await FirebaseMessaging.instance.getToken().then((token)
      {
       setState(() {
@@ -161,7 +161,7 @@ await FirebaseFirestore.instance.collection("User Token").doc(FirebaseAuth.insta
     "token" : token,
 
 });
-}*/
+}
   
  void sendPushMessage(String token, String title, String body) async
  {
