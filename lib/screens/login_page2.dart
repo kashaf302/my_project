@@ -1,6 +1,8 @@
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:keto_app/Services/auth.dart';
+import 'package:keto_app/controller/services/session_controller.dart';
 import 'package:keto_app/screens/admin_screen.dart';
 import 'package:keto_app/screens/home_page.dart';
 import 'package:keto_app/screens/plan1_breakfast.dart';
@@ -20,9 +22,16 @@ class LoginScreenUser extends StatefulWidget {
 }
 
 class _LoginScreenUserState extends State<LoginScreenUser> {
-  final AuthService _auth = AuthService(FirebaseAuth.instance);
+  final FirebaseAuth _auth = FirebaseAuth.instance ;
+
+  String token = '' ;
+  final ref =FirebaseFirestore.instance.collection('User Data');
+  final userToken =FirebaseFirestore.instance.collection('User Token');
+  final message = FirebaseMessaging.instance ;
+
+
   final _formKey = GlobalKey<FormState>();
-final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController emailField = TextEditingController();
   TextEditingController passwordField = TextEditingController();
   String error="";
@@ -30,9 +39,15 @@ final _scaffoldKey = GlobalKey<ScaffoldState>();
 
 
   bool loading=false;
-  
+
   var result;
-  
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
 /*void initState(){
   super.initState();
    checkRole();
@@ -43,9 +58,9 @@ void checkRole() async{
  setState(() {
    role=snap['snap'];
  });*/
- /*if(role=="user")
+  /*if(role=="user")
  {
-  await _auth.signIn(emailField.text, passwordField.text).then((User? user) => 
+  await _auth.signIn(emailField.text, passwordField.text).then((User? user) =>
                  Navigator.push(context,MaterialPageRoute(
                   builder: (context) => DietPlans())),
                  ).onError((error, stackTrace) {
@@ -55,14 +70,14 @@ void checkRole() async{
                   content: Text('User does not exist for that email'),
                   duration: const Duration(seconds: 3),
                   ),
-                 
+
                 );
-                
+
                        } );
  }
  else if(role=="Admin")
  {
-  await _auth.signIn(emailField.text, passwordField.text).then((User? user) => 
+  await _auth.signIn(emailField.text, passwordField.text).then((User? user) =>
                  Navigator.push(context,MaterialPageRoute(
                   builder: (context) => Breakfast1())),
                  ).onError((error, stackTrace) {
@@ -72,18 +87,19 @@ void checkRole() async{
                   content: Text('User does not exist for that email'),
                   duration: const Duration(seconds: 3),
                   ),
-                 
+
                 );
-                
+
                        } );
  }*/
 //}
+
   @override
   Widget build(BuildContext context) {
     return loading? Loading() : Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.deepOrangeAccent,
-     
+
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal:40),
         height: MediaQuery.of(context).size.height,
@@ -91,7 +107,7 @@ void checkRole() async{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            
+
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -116,58 +132,58 @@ void checkRole() async{
                       ),
                     ],
                   ),
-                  Form(  
-                      key: _formKey,
-                      child: Column(
-                        children: <Widget>[
-                          const SizedBox(height: 20.0),
-                          TextFormField(
-                            keyboardType: TextInputType.text,
-                            controller: emailField,
-                            
-                            decoration: const InputDecoration(
-                             
-                              contentPadding: EdgeInsets.symmetric(vertical: 0,horizontal: 10),
-                              // icon: Icon(Icons.email),
-                              hintText: 'something@email.com',
-                              fillColor: Colors.white,
-                              filled: true,
-                              prefixIcon: Icon(Icons.email),
-                              hintStyle: TextStyle(
-                                color: Colors.grey,
-                              ),
-                              labelText: "Email",
-                              labelStyle:  TextStyle(
-                                color: Colors.black,
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.white,
-                                ),
-                              ),
-                               focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.deepOrange),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        const SizedBox(height: 20.0),
+                        TextFormField(
+                          keyboardType: TextInputType.text,
+                          controller: emailField,
+
+                          decoration: const InputDecoration(
+
+                            contentPadding: EdgeInsets.symmetric(vertical: 0,horizontal: 10),
+                            // icon: Icon(Icons.email),
+                            hintText: 'something@email.com',
+                            fillColor: Colors.white,
+                            filled: true,
+                            prefixIcon: Icon(Icons.email),
+                            hintStyle: TextStyle(
+                              color: Colors.grey,
+                            ),
+                            labelText: "Email",
+                            labelStyle:  TextStyle(
+                              color: Colors.black,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.white,
                               ),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter email';
-                              }
-                              if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
-                                   return 'Please enter a valid Email';
-                              }
-                              return null;
-                            },
-                          
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.deepOrange),
+                            ),
                           ),
-                          const SizedBox(height: 20.0),
-                          TextFormField(
-                          
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter email';
+                            }
+                            if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
+                              return 'Please enter a valid Email';
+                            }
+                            return null;
+                          },
+
+                        ),
+                        const SizedBox(height: 20.0),
+                        TextFormField(
+
                             obscureText: true,
-                            
-                           controller: passwordField,
+
+                            controller: passwordField,
                             decoration: const InputDecoration(
-                             contentPadding: EdgeInsets.symmetric(vertical: 0,horizontal: 10),
+                              contentPadding: EdgeInsets.symmetric(vertical: 0,horizontal: 10),
                               hintText: 'password',
                               fillColor: Colors.white,
                               filled:true,
@@ -179,118 +195,101 @@ void checkRole() async{
                               labelStyle: TextStyle(
                                 color: Colors.black,
                               ),
-                                enabledBorder: OutlineInputBorder(  
-                                borderSide: BorderSide(
-                                  color: Colors.white,
-                                )
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
+                                  )
                               ),
-                               focusedBorder: OutlineInputBorder(
+                              focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.deepOrange),
                               ),
                             ),
                             validator: (value){
-                               if (value==null|| value.length<6) {
+                              if (value==null|| value.length<6) {
                                 return 'Please enter 6+ characters long password ';
                               }
                               return null;
-                            }      
-                          ),
-                        ], 
-                      ),
-                      ),
+                            }
+                        ),
+                      ],
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: MaterialButton(
                       minWidth: double.infinity,
                       height: 60,
                       onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                         setState(() {
-                           loading=true;
-                         });
-      // If the form is valid, display a snackbar. In the real world,
-      // you'd often call a server or save the information in a database.
-                  
-                  if(emailField.text=="kashafu719@gmail.com")
-                    {
-                dynamic result= await _auth.signIn(emailField.text, passwordField.text).then((User? user) => 
-                 Navigator.push(context,MaterialPageRoute(
-                  builder: (context) => AdminScreen())),
-                 ).onError((error, stackTrace) {
-                 print("Error ${error.toString()}");
-                 ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('User does not exist for that email'),
-                  duration: const Duration(seconds: 3),
-                  ),
-                 
-                );
-                       } );
-                    }
-                    else if(emailField.text=="asad@gmail.com")
-                    {
-                      dynamic result= await _auth.signIn(emailField.text, passwordField.text).then((User? user) => 
-                 Navigator.push(context,MaterialPageRoute(
-                  builder: (context) =>RiderScreen())),
-                 ).onError((error, stackTrace) {
-                 print("Error ${error.toString()}");
-                 ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('User does not exist for that email'),
-                  duration: const Duration(seconds: 3),
-                  ),
-                 
-                );  
-                
-                       } );
-                    }
+                        if (_formKey.currentState!.validate()) {
 
-                    else if(emailField.text=="umer@gmail.com")
-                    {
-                      dynamic result= await _auth.signIn(emailField.text, passwordField.text).then((User? user) => 
-                 Navigator.push(context,MaterialPageRoute(
-                  builder: (context) =>RiderScreen())),
-                 ).onError((error, stackTrace) {
-                 print("Error ${error.toString()}");
-                 ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('User does not exist for that email'),
-                  duration: const Duration(seconds: 3),
-                  ),
-                 
-                );
-                
-                       } );
-                    }
-                    else 
-                    {
-                   dynamic result= await _auth.signIn(emailField.text, passwordField.text).then((User? user) => 
-                 Navigator.push(context,MaterialPageRoute(
-                  builder: (context) =>DietPlans())),
-                 ).onError((error, stackTrace) {
-                 print("Error ${error.toString()}");
-                 ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('User does not exist for that email'),
-                  duration: const Duration(seconds: 3),
-                  ),
-                 
-                );
-                
-                       } );
-                    }
-                 
-                      }
-                
-                if(result==null)
-                {
-                  setState(() {
-                    error='could not sign in with those credentials';
-                    loading=false;
-                  });
-                }
-                        },
-                      
+                          setState(() {
+                            loading = true;
+                          });
+
+                          _auth.signInWithEmailAndPassword(
+                              email : emailField.text,
+                              password: passwordField.text).then((value){
+                            SessionController().userId = value!.user!.uid.toString() ;
+
+                            final userToken =FirebaseFirestore.instance.collection('User Token');
+                            final message = FirebaseMessaging.instance ;
+
+                            message.getToken().then((newValue){
+                              userToken.doc(value!.user!.uid.toString()).set({
+                                'token' : newValue.toString() ,
+                                'userId' : value!.user!.uid.toString()
+                              });
+                              ref.doc(value!.user!.uid.toString()).update({
+                                'token' : newValue.toString()
+                              });
+
+                            });
+
+
+                            ref.doc(value!.user!.uid.toString()).get().then((value){
+
+                              setState(() {
+                                loading=false;
+                              });
+
+                              SessionController().weight = value.get('Weight').toString();
+
+                              if(value.get('role') == 'user'){
+                                Navigator.push(context,MaterialPageRoute(
+                                    builder: (context) =>DietPlans()));
+                              }else if(value.get('role') == 'admin'){
+                                Future.delayed(Duration(seconds: 2)).then((value) =>Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>  AdminScreen())));
+                              }else if(value.get('role') == 'rider'){
+
+                                Future.delayed(Duration(seconds: 2)).then((value) =>Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>  RiderScreen())));
+                              }
+
+                            });
+
+                          }).onError((error, stackTrace){
+                            setState(() {
+                              loading=false;
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('User does not exist for that email'),
+                                duration: const Duration(seconds: 3),
+                              ),
+                            );
+                          });
+                          
+
+                        }
+
+
+                      },
+
                       color: Colors.white,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
@@ -319,7 +318,7 @@ void checkRole() async{
                       Center(
                         child: ElevatedButton(
                           onPressed: () {
-                            
+
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(

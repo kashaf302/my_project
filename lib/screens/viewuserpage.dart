@@ -15,22 +15,9 @@ class ViewUserpage extends StatefulWidget {
 }
 
 class _ViewUserpageState extends State<ViewUserpage> {
-  DBservice db = DBservice();
-  List userData = [];
 
-  void initState() {
-    super.initState();
-    getData();
-  }
+  final ref = FirebaseFirestore.instance.collection('User Data').snapshots();
 
-  getData() async {
-    await db.fetchUserData().then((res) {
-      setState(() {
-        userData = res;
-        print(userData);
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,29 +40,42 @@ class _ViewUserpageState extends State<ViewUserpage> {
         )
         ),
       ),
-      body: ListView.builder(
-        itemCount: userData.length,
-        itemBuilder: (context, index) => Padding(
-          padding: EdgeInsets.all(10.0),
-          child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: Colors.deepOrangeAccent,
-            ),
-            title: Text(
-              userData[index].email,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20.0,
-              ),
-            ),
-            subtitle: Text(
-              '${userData[index].weight} kg',
-              style: TextStyle(
-                fontSize: 25.0,
-              ),
-            ),
-          ),
-        ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: ref ,
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
+          if(!snapshot.hasData){
+            return Center(child: CircularProgressIndicator());
+          }else {
+            return ListView(
+              children: snapshot.data!.docs.map((DocumentSnapshot document){
+                Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                return                 Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.deepOrangeAccent,
+                    ),
+                    title: Text(
+                      data['Email'],
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    subtitle: Text(
+                      '${data['Weight'].toString()} kg',
+                      style: TextStyle(
+                        fontSize: 25.0,
+                      ),
+                    ),
+                  ),
+                ) ;
+;
+              }).toList(),
+            );
+
+          }
+        },
       ),
     );
   }

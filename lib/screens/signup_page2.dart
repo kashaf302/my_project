@@ -1,6 +1,8 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:keto_app/Services/db.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:keto_app/controller/services/session_controller.dart';
 import 'package:keto_app/screens/home_page.dart';
 import 'package:keto_app/screens/login_page2.dart';
 import 'package:keto_app/Services/auth.dart';
@@ -24,9 +26,12 @@ class SignUpScreenUser extends StatefulWidget {
 
 class _SignUpScreenUserState extends State<SignUpScreenUser> {
   bool navigateToPage=false;
-  int _value = 1;
-  final DBservice uid = DBservice();
-  final AuthService _auth = AuthService(FirebaseAuth.instance);
+
+
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance ;
+
+  final message = FirebaseMessaging.instance ;
+
   final _formKey = GlobalKey<FormState>();
   TextEditingController Username = TextEditingController();
  // OneSignalService one=OneSignalService();
@@ -36,10 +41,21 @@ class _SignUpScreenUserState extends State<SignUpScreenUser> {
   TextEditingController weight = TextEditingController();
   TextEditingController emailField = TextEditingController();
   TextEditingController address = TextEditingController();
+  String token = '' ;
 
   bool loading = false;
   String error = '';
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+
+    message.getToken().then((value){
+      token = token ;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return loading
@@ -47,7 +63,6 @@ class _SignUpScreenUserState extends State<SignUpScreenUser> {
         : Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.deepOrangeAccent,
-           
             body: SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -371,70 +386,76 @@ class _SignUpScreenUserState extends State<SignUpScreenUser> {
                             setState(() {
                               loading = true;
                             });
-                            // If the form is valid, display a snackbar. In the real world,
-                            // you'd often call a server or save the information in a database.
-                            // ScaffoldMessenger.of(context).showSnackBar(
-                            //
-                            //const SnackBar(content: Text('Processing Data')),
-                            //  );
-                            //  final String uid='';
 
-                           final keto_collection = FirebaseFirestore.instance
-                                .collection('User Data');
-                                if(_value==1){
-                                
-                            dynamic result = await _auth
-                                .register(emailField.text, passwordField.text,
-                                height.text, weight.text, address.text) 
-                                .then((User? user) => 
-                                
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                   builder: (context) => DietPlans()))).onError((error, stackTrace) {
-                                        
-                                        print("Error ${error.toString()}");
-                                         ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                  content: Text('This email already exists'),
-                               // duration: const Duration(seconds: 3),
-                                   ),
-                 
-                                     );
-                                   } );
-                                
-                                
-                               if (result == null) {
+
+                            final  fireStoreRef = FirebaseFirestore.instance.collection('User Data');
+
+                            firebaseAuth.createUserWithEmailAndPassword(
+                                email: emailField.text.toString(),
+                                password: passwordField.text).then((value){
+
+                                  SessionController().userId = value!.user!.uid.toString();
+                                  print('success');
+                                  print(value.user!.uid.toString());
+                                  SessionController().weight = weight.text;
+
+                                  final userToken =FirebaseFirestore.instance.collection('User Token');
+                                  final message = FirebaseMessaging.instance ;
+
+                                  message.getToken().then((newValue){
+                                    userToken.doc(value!.user!.uid.toString()).set({
+                                      'token' : newValue.toString() ,
+                                      'userId' : value!.user!.uid.toString()
+                                    });
+                                  });
+
+
+                                  fireStoreRef.doc(value!.user!.uid.toString()).set({
+                                    'userId': value.user!.uid.toString(),
+                                    'Email': value!.user!.email.toString(),
+                                    'Height': height.text,
+                                    'Weight': weight.text,
+                                    'Address': address.text,
+                                    'token' : token.toString(),
+                                    'role'  : 'user'
+                                  }).then((value){
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => DietPlans()));
+                                  }).onError((error, stackTrace){
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                       SnackBar(
+                                        content: Text(error.toString()),
+                                        duration: const Duration(seconds: 3),
+                                      ),
+                                    );
+
+                                  });
+
+                            }).onError((error, stackTrace){
+                              print(stackTrace);
                               setState(() {
-                                error = 'please provide a valid email';
                                 loading = false;
                               });
-                            }
-                                }
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(error.toString()),
+                                  duration: const Duration(seconds: 3),
+                                ),
+                              );
+                            });
 
-                                //Rider
-                         else  if(_value==2){
-                            dynamic result = await _auth
-                                .register(emailField.text,passwordField.text,
-                                height.text, weight.text, address.text)
-                                .whenComplete(() => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Breakfast1())));
-                                     
 
-                            if (result == null) {
-                              setState(() {
-                                error = 'please provide a valid email';
-                                loading = false;
-                              });
-                            }
-                                }
 
-                                }
-                          // await context.read<AuthService>().Register(emailField.text,passwordField.text);
-                         
-                        },
+
+                                }},
                         color: Colors.white,
                         elevation: 0,
                         shape: RoundedRectangleBorder(

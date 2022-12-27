@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "273933816167",
+    "project_id": "my-project-97e95",
+    "storage_bucket": "my-project-97e95.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273933816167:android:c34d93c7cb5e5e86e81fc2",
+        "android_client_info": {
+          "package_name": "com.example.ketoApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273933816167-qg37024k1iuh7alg0rouem9os5ks9kcn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsaXaqk5K-yQfh_TMDeKsyTVBO2pgd_UE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "273933816167-qg37024k1iuh7alg0rouem9os5ks9kcn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273933816167:android:e53f4366f9a0c226e81fc2",
+        "android_client_info": {
+          "package_name": "com.example.keto_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273933816167-qg37024k1iuh7alg0rouem9os5ks9kcn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsaXaqk5K-yQfh_TMDeKsyTVBO2pgd_UE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "273933816167-qg37024k1iuh7alg0rouem9os5ks9kcn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

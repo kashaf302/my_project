@@ -1,31 +1,26 @@
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:keto_app/Services/auth.dart';
 import 'package:keto_app/models/user_data.dart';
-import 'package:keto_app/screens/alert_dialog_logout.dart';
-import 'package:keto_app/screens/viewuserpage.dart';
 import 'package:http/http.dart' as http;
 import 'package:keto_app/Services/db.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:keto_app/screens/signup_page2.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:keto_app/screens/alert_dialog_logout.dart';
 
-class AdminScreen extends StatefulWidget {
-  const AdminScreen({
-    Key? key,
-  }) : super(key: key);
+class NotifyUser extends StatefulWidget {
+  const NotifyUser({super.key});
 
   @override
-  State<AdminScreen> createState() => _AdminScreenState();
+  State<NotifyUser> createState() => _NotifyUserState();
 }
 
-class _AdminScreenState extends State<AdminScreen> {
-  String? mtoken = " ";
+class _NotifyUserState extends State<NotifyUser> {
+   String? mtoken = " ";
   DBservice userid = DBservice();
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
@@ -209,20 +204,31 @@ await FirebaseFirestore.instance.collection("User Token").doc(FirebaseAuth.insta
       }
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
-        backgroundColor: Colors.deepOrangeAccent,
+        backgroundColor: Colors.red,
+        
         elevation: 0,
         automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+           IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+        ),
+        
+             const SizedBox(width: 20),
             const Text(
-              'Admin Panel',
+              'Notify User',
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -230,27 +236,27 @@ await FirebaseFirestore.instance.collection("User Token").doc(FirebaseAuth.insta
               ),
             ),
             const SizedBox(width: 40),
-            ElevatedButton.icon(
-              icon: const Icon(
-                Icons.person,
+             ElevatedButton.icon(
+              icon: const Icon(Icons.person,
+              color: Colors.black,
+              ),
+              label: const Text('Logout',
+              style: TextStyle(
                 color: Colors.black,
               ),
-              label: const Text(
-                'Logout',
-                style: TextStyle(
-                  color: Colors.black,
-                ),
+              
               ),
               onPressed: () async {
-                await AlertDialogs.yesCancelDialog(
-                    context, 'Logout', 'Are you sure you want to logout?');
+                
+                    await AlertDialogs.yesCancelDialog(context, 'Logout', 'Are you sure you want to logout?');
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepOrangeAccent,
+                backgroundColor: Colors.red,
               ),
             ),
           ],
         ),
+  
       ),
       body: Center(
         child: Form(
@@ -364,51 +370,12 @@ await FirebaseFirestore.instance.collection("User Token").doc(FirebaseAuth.insta
               ),
             ),
 
-            const SizedBox(height: 20),
-            MaterialButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ViewUserpage()));
-              },
-              color: Colors.deepOrangeAccent,
-              child: const Text(
-                "view user data",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18,
-                  color: Colors.black,
-                ),
-              ),
-            ),
+           
           ]),
         ),
       ),
-      /* bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home
-            ),
-            label: 'Home',
-            backgroundColor: Colors.white,
-
-            ),
-
-            BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-            backgroundColor: Colors.white,
-            ),
-            BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-            backgroundColor: Colors.white,
-            )
-        ]
-
-
-        ),*/
+    
+    
     );
   }
 }

@@ -9,6 +9,7 @@ import 'package:google_maps_webservice/places.dart';
 //import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:keto_app/screens/notify_user.dart';
 
 import 'alert_dialog_logout.dart';
 
@@ -119,25 +120,27 @@ addPolyLine(List<LatLng> polylineCoordinates) {
                 fontSize: 25,
               ),
             ),
-            const SizedBox(width: 40),
-             ElevatedButton.icon(
-              icon: const Icon(Icons.person,
-              color: Colors.black,
-              ),
-              label: const Text('Logout',
-              style: TextStyle(
-                color: Colors.black,
-              ),
-              
-              ),
-              onPressed: () async {
-                
-                    await AlertDialogs.yesCancelDialog(context, 'Logout', 'Are you sure you want to logout?');
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-            ),
+            const SizedBox(width: 20),
+           ElevatedButton(
+                          onPressed: () {
+
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => NotifyUser()));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.red,
+                          ),
+                          child: const Text(
+                            'Notify',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
           ],
         ),
       ),
@@ -271,7 +274,8 @@ addPolyLine(List<LatLng> polylineCoordinates) {
             
             ),
             
-            )
+            ),
+            
           ],
         ),
     

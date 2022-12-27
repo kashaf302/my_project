@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class UserData {
   String userId;
   String email;
-  double height;
-  double weight;
+  String height;
+  String weight;
   String address;
   //String tokenId;
 
@@ -17,7 +17,5 @@ class UserData {
      // required this.tokenId
      }
      );
-
-  
 
 }
